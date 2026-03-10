@@ -3,7 +3,7 @@ from enum import Enum
 # не уверена, что status и остальные классы про важность/срочность именно тут стоит хранить
 class TaskStatus(str, Enum): 
     new = 'new'
-    in_progres = 'in_progress'
+    in_progress = 'in progress'
     done = 'done'
     late = 'late'
     cancelled = 'cancelled'

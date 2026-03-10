@@ -1,5 +1,5 @@
 from pydantic import BaseModel, computed_field
-from pydantic.types import EmailStr
+from pydantic import EmailStr
 
 class BaseUser(BaseModel):
     id : int
