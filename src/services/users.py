@@ -1,48 +1,41 @@
-from schemas import BaseUser
+from fastapi import Depends, HTTPException
+from typing import List
 
-users = [
-    BaseUser(
-        id=1,
-        name="Darina",
-        surname="Ivanova",
-        email="darina.ivanova@gmail.com"
-    ),
-    BaseUser(
-        id=2,
-        name="Maxim",
-        surname="Petrov",
-        email="max.petrov@gmail.com"
-    ),
-    BaseUser(
-        id=3,
-        name="Anna",
-        surname="Smirnova",
-        email="anna.smirnova@gmail.com"
-    ),
-    BaseUser(
-        id=4,
-        name="Ivan",
-        surname="Kuznetsov",
-        email="ivan.kuznetsov@gmail.com"
-    ),
-    BaseUser(
-        id=5,
-        name="Elena",
-        surname="Sokolova",
-        email="elena.sokolova@gmail.com"
-    ),
-    BaseUser(
-        id=6,
-        name="Dmitry",
-        surname="Volkov",
-        email="d.volkov@gmail.com"
-    ),
-]
-
+from schemas import BaseUser, RegistrationUser, LoginUser, AccessToken
+from repositories import UserRepository
+from src.core.security import verify_password, create_access_token
 
 class UserService:
-    def __init__(self):
-        self.user_mock_db = users
+    def __init__(self, repository: UserRepository = Depends()):
+        self.repo = repository
 
-    def get_all_users(self):
-        return [BaseUser(**user.model_dump()) for user in self.user_mock_db]
+    def get_all_users(self, limit, offset) -> List[BaseUser] | None:
+        return self.repo.get_all(limit, offset)
+    
+    def get_user_by_id(self, user_id: int):
+        return self.repo.get_by_id(user_id)
+    
+    def get_user_by_email(self, user_email: str):
+        return self.repo.get_by_email(user_email)
+    
+    def create_user(self, user: RegistrationUser):
+        if not self.repo.get_by_email(user.email):
+            return self.repo.create(user)
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="User already exists"
+            )
+        
+    def login_user(self, user: LoginUser) -> AccessToken | None:
+        db_user = self.repo.get_by_email(user.email)
+
+        if not verify_password(user.password, db_user.user_password_hash):
+            raise HTTPException(
+                status_code=401, 
+                detail="Wrong login data"
+            )
+
+        token = create_access_token({"sub": db_user.user_email})
+
+        return AccessToken(access_token=token, token_type="bearer")

@@ -20,7 +20,7 @@ class BaseTask(BaseModel):
 
 class CreateTask(BaseTask): 
     id_owner: int # кто создал задачу
-    creation_time: date # когда создали задачу (по идее, должно создаваться само)
+    creation_time: date # когда создали задачу
 
 class GetTask(BaseTask):
     id_owner: int

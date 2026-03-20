@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from api import tasks_router
 from api import users_router
+from api import auth_router
 
 common_router = APIRouter()
 
@@ -15,3 +16,4 @@ def root():
 
 common_router.include_router(users_router)
 common_router.include_router(tasks_router)
+common_router.include_router(auth_router)

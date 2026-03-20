@@ -1,6 +1,6 @@
 from schemas.tasks import  BaseTask, CreateTask, UpdateTask, GetTask
 from schemas.tasks_types import TaskStatus, TaskImportance, TaskUrgency
-from schemas.users import BaseUser
+from schemas.users import BaseUser, RegistrationUser, LoginUser, AccessToken
 
 __all__ = (
     'BaseUser',
@@ -10,5 +10,8 @@ __all__ = (
     'GetTask',
     'TaskStatus',
     'TaskImportance',
-    'TaskUrgency'
+    'TaskUrgency',
+    'RegistrationUser',
+    'LoginUser',
+    'AccessToken',
 )
