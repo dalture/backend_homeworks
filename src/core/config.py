@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     db_pass: str
     db_name: str
 
+    secret_key: str
+
     model_config = SettingsConfigDict(env_file=".env")
 
 settings = Settings()

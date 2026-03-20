@@ -1,36 +1,35 @@
-from pydantic import BaseModel, computed_field
-from typing import Optional, List
+from pydantic import BaseModel
+from typing import Optional
 from datetime import date
 
 from schemas.tasks_types import TaskImportance, TaskUrgency, TaskStatus
 
 class BaseTask(BaseModel): 
-    id: int
-    name: str
-    description: Optional[str] = None
-    importance: Optional[TaskImportance] = None
-    urgency: Optional[TaskUrgency] = None
-    status: TaskStatus
-    deadline: Optional[date] = None
-    id_performers: List[int] = []
+    task_name: str
+    task_description: Optional[str] = None
+    task_importance: Optional[TaskImportance] = None
+    task_urgency: Optional[TaskUrgency] = None
+    task_status: TaskStatus
+    task_deadline: Optional[date] = None
+    id_owner: int
 
-    @computed_field
-    def performers_count(self) -> int:
-        return len(self.id_performers)
-
-class CreateTask(BaseTask): 
-    id_owner: int # кто создал задачу
-    creation_time: date # когда создали задачу
+class CreateTask(BaseModel): 
+    task_name: str
+    task_description: Optional[str] = None
+    task_importance: Optional[TaskImportance] = None
+    task_urgency: Optional[TaskUrgency] = None
+    task_status: TaskStatus
+    task_deadline: Optional[date] = None
+    id_owner: int
 
 class GetTask(BaseTask):
     id_owner: int
     creation_time: date
 
 class UpdateTask(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    importance: Optional[TaskImportance] = None
-    urgency: Optional[TaskUrgency] = None
-    status: Optional[TaskStatus] = None
-    deadline: Optional[date] = None
-    id_performers: List[int] = []
+    task_name: Optional[str] = None
+    task_description: Optional[str] = None
+    task_importance: Optional[TaskImportance] = None
+    task_urgency: Optional[TaskUrgency] = None
+    task_status: Optional[TaskStatus] = None
+    task_deadline: Optional[date] = None

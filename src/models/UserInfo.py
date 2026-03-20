@@ -11,7 +11,4 @@ class UserInfo(Base):
     user_surname = Column(String(255), nullable=False)
     user_email = Column(String(255), nullable=False)
     user_password_hash = Column(String(255), nullable=False)
-    task_id = Column(Integer, ForeignKey("TaskInfo.task_id"))
     user_created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-
-    # пусть будет один таск для пользователя
