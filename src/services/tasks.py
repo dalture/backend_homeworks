@@ -2,6 +2,7 @@ from fastapi import Depends
 from typing import List
 from schemas import CreateTask, UpdateTask, GetTask, TaskStatus
 from repositories import TaskRepository
+from services.users import UserService
 
 class TaskService:
     def __init__(self, repository: TaskRepository = Depends()):
@@ -19,25 +20,24 @@ class TaskService:
     
     # обновить задачу (чек логики статусов)
     def update_task(self, task_id: int, payload: UpdateTask) -> GetTask | None:
-        tasks = self.repo.get_all_tasks()
-
-        for task in tasks:
-            for field, value in payload.items():
-                if field == "status" and (task.task_status == TaskStatus.done and value == TaskStatus.in_progress):
-                    return {
-                            "status": "error",
-                            "message": "Task is already done"
-                            }
-                elif field == "status" and (task.task_status not in [TaskStatus.in_progress, TaskStatus.new] and value == TaskStatus.done):
-                    return {
-                            "status": "error",
-                            "message": "Task cannot be marked as done"
-                            }                        
+        update_info = payload.model_dump(exclude_unset=True)
+        for field, value in update_info.items():
+            if field == "status" and (payload.task_status == TaskStatus.done and value == TaskStatus.in_progress):
+                return {
+                        "status": "error",
+                        "message": "Task is already done"
+                        }
+            elif field == "status" and (payload.task_status not in [TaskStatus.in_progress, TaskStatus.new] and value == TaskStatus.done):
+                return {
+                        "status": "error",
+                        "message": "Task cannot be marked as done"
+                        }                        
         task_db = self.repo.update(task_id, payload)
         return task_db
 
     # удалить задачу (чек на существование)
     def delete_task(self, deleting_task_id: int) -> bool:
+        task_db = self.repo.get_by_id(deleting_task_id)
         return self.repo.delete(deleting_task_id)
 
     # вывод всех задач
