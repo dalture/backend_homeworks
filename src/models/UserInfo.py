@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from core.database import Base
-from models import TaskInfo
 
 class UserInfo(Base):
     __tablename__ = "user_info"

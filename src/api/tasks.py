@@ -3,8 +3,8 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
 
-from schemas import CreateTask, UpdateTask, GetTask
-from services import TaskService
+from schemas import CreateTask, UpdateTask, GetTask, CreateComment, UpdateComment, GetComment
+from services import TaskService, CommentService
 from dependancy import check_headers
 
 
@@ -58,4 +58,31 @@ def delete_task(task_id: int, service: TaskService = Depends()) -> JSONResponse:
         "message": "Task deleted"
         })
 
+@router.post("/{task_id}/comments", status_code=status.HTTP_200_OK)
+def create_comment(task_id: int, payload: CreateComment, service: CommentService = Depends()) -> JSONResponse:
+    add_result = service.create_comment(new_comment=payload)
+    return JSONResponse({
+        "message": "Comment created",
+        "comment": jsonable_encoder(add_result)
+        })
 
+@router.get("/{task_id}/comments", status_code=status.HTTP_200_OK)
+def get_comments(service: CommentService = Depends()) -> JSONResponse:
+    get_result = service.get_all_comments(limit=10, offset=0)
+    if not get_result:
+        return JSONResponse({
+            "status": "error",
+            "message": "No comments found"
+            }, status.HTTP_404_NOT_FOUND)
+    return JSONResponse(
+        jsonable_encoder(get_result)
+        )
+
+@router.delete("/{task_id}/comments/{comment_id}", status_code=status.HTTP_200_OK)
+def delete_comment(comment_id: int, service: CommentService = Depends()) -> JSONResponse:
+    delete_result = service.delete_comment(comment_id=comment_id)
+    if not delete_result:
+        return HTTPException(status.HTTP_404_NOT_FOUND, detail="Comment not found")
+    return JSONResponse({
+        "message": "Comment deleted"
+        })

@@ -14,7 +14,7 @@ class TaskService:
         return task_db
 
     # добавить задачу
-    def add_task(self, new_task: CreateTask) -> GetTask | None:
+    def add_task(self, new_task: CreateTask) -> GetTask:
         task_db = self.repo.create(new_task)
         return task_db
     
