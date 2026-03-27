@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from core.config import DB_URL
+
+from src.core.config import DB_URL
 
 Base = declarative_base()
 engine = create_engine(DB_URL)

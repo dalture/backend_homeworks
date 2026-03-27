@@ -2,11 +2,11 @@ from typing import List, Optional
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from models import UserInfo
-from schemas import BaseUser, RegistrationUser
-from core.security import hash_password
+from src.models import UserInfo
+from src.schemas import BaseUser, RegistrationUser
+from src.core.security import hash_password
 
-from core.database import get_db
+from src.core.database import get_db
 
 class UserRepository:
     def __init__(self, db: Session = Depends(get_db)):

@@ -1,6 +1,6 @@
-from repositories.tasks import TaskRepository
-from repositories.users import UserRepository
-from repositories.comments import CommentRepository
+from .tasks import TaskRepository
+from .users import UserRepository
+from .comments import CommentRepository
 
 __all__ = (
     "TaskRepository",

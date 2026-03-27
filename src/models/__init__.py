@@ -1,6 +1,6 @@
-from models.TaskInfo import TaskInfo
-from models.UserInfo import UserInfo
-from models.CommentInfo import CommentInfo
+from .TaskInfo import TaskInfo
+from .UserInfo import UserInfo
+from .CommentInfo import CommentInfo
 
 __all__ = (
     "TaskInfo",

@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import date
 
-from schemas.tasks_types import TaskImportance, TaskUrgency, TaskStatus
+from src.schemas.tasks_types import TaskImportance, TaskUrgency, TaskStatus
 
 class BaseTask(BaseModel): 
     task_name: str

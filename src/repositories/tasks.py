@@ -1,10 +1,10 @@
 from typing import List, Optional
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from models import TaskInfo
-from schemas import CreateTask, UpdateTask
 
-from core.database import get_db
+from src.models import TaskInfo
+from src.schemas import CreateTask, UpdateTask
+from src.core.database import get_db
 
 class TaskRepository:
     def __init__(self, db: Session = Depends(get_db)):

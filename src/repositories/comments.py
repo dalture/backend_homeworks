@@ -2,9 +2,9 @@ from sqlalchemy.orm import Session
 from typing import Optional, List
 from fastapi import Depends
 
-from models import CommentInfo
-from schemas import CreateComment, UpdateComment
-from core.database import get_db
+from src.models import CommentInfo
+from src.schemas import CreateComment, UpdateComment
+from src.core.database import get_db
 
 class CommentRepository:
     def __init__(self, db: Session = Depends(get_db)):

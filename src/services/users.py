@@ -1,9 +1,10 @@
 from fastapi import Depends, HTTPException
 from typing import List
 
-from schemas import BaseUser, RegistrationUser, LoginUser, AccessToken
-from repositories import UserRepository
-from core.security import verify_password, create_access_token
+from src.schemas import BaseUser, RegistrationUser, LoginUser, AccessToken
+from src.repositories import UserRepository
+from src.core.security import verify_password, create_access_token
+from src.core.exceptions import UserNotFoundException
 
 class UserService:
     def __init__(self, repository: UserRepository = Depends()):
@@ -13,7 +14,12 @@ class UserService:
         return self.repo.get_all_users(limit, offset)
     
     def get_user_by_id(self, user_id: int):
-        return self.repo.get_by_id(user_id)
+        user_db = self.repo.get_by_id(user_id)
+
+        if not user_db:
+            return UserNotFoundException(user_id=user_id)
+        
+        return user_db
     
     def get_user_by_email(self, user_email: str):
         return self.repo.get_by_email(user_email)

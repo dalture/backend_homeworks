@@ -1,8 +1,9 @@
 from fastapi import Depends
 from typing import List
-from schemas import CreateTask, UpdateTask, GetTask, TaskStatus
-from repositories import TaskRepository
-from services.users import UserService
+
+from src.schemas import CreateTask, UpdateTask, GetTask, TaskStatus
+from src.repositories import TaskRepository
+from src.core.exceptions import TaskNotFoundException
 
 class TaskService:
     def __init__(self, repository: TaskRepository = Depends()):
@@ -11,6 +12,10 @@ class TaskService:
         # вывод задачи
     def get_task_by_id(self, task_id: int) -> GetTask | None:
         task_db = self.repo.get_by_id(task_id)
+
+        if not task_db:
+            return TaskNotFoundException(task_id=task_id)
+        
         return task_db
 
     # добавить задачу
@@ -38,7 +43,11 @@ class TaskService:
     # удалить задачу (чек на существование)
     def delete_task(self, deleting_task_id: int) -> bool:
         task_db = self.repo.get_by_id(deleting_task_id)
-        return self.repo.delete(deleting_task_id)
+
+        if not task_db:
+            return TaskNotFoundException(task_id=deleting_task_id)
+        
+        return task_db
 
     # вывод всех задач
     def get_all_tasks(self, limit, offset) -> List[GetTask] | None:

@@ -1,6 +1,6 @@
-from services.tasks import TaskService
-from services.users import UserService
-from services.comments import CommentService
+from .tasks import TaskService
+from .users import UserService
+from .comments import CommentService
 
 __all__ = (
     'TaskService',
