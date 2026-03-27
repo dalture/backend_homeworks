@@ -38,16 +38,25 @@ class TaskService:
                         "message": "Task cannot be marked as done"
                         }                        
         task_db = self.repo.update(task_id, payload)
+
+        if not task_db:
+            return TaskNotFoundException(task_id=task_id)
+        
         return task_db
 
     # удалить задачу (чек на существование)
-    def delete_task(self, deleting_task_id: int) -> bool:
+    def delete_task(self, deleting_task_id: int) -> GetTask | None:
         task_db = self.repo.get_by_id(deleting_task_id)
 
         if not task_db:
             return TaskNotFoundException(task_id=deleting_task_id)
         
-        return task_db
+        result = self.repo.delete(deleting_task_id)
+        if result:
+            return {
+                    "status": "success",
+                    "message": "Task deleted"
+            }
 
     # вывод всех задач
     def get_all_tasks(self, limit, offset) -> List[GetTask] | None:

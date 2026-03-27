@@ -30,3 +30,6 @@ class CommentService:
     
     def get_all_comments(self, limit, offset) -> List[GetComment] | None:
         return self.repo.get_all_comments(limit, offset)
+    
+    def get_comments_by_id(self, comment_id: int) -> GetComment | None:
+        return self.repo.get_by_id(comment_id)

@@ -17,4 +17,4 @@ class TaskInfo(Base):
     task_created_at = Column(DateTime(timezone=True), server_default=func.now())
     task_deadline = Column(DateTime(timezone=True), nullable=True)
 
-    comments = relationship("CommentInfo", back_populates="task")
+    comments = relationship("CommentInfo", back_populates="task", cascade="all, delete-orphan")

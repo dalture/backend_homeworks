@@ -1,9 +1,9 @@
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
-from api import tasks_router
-from api import users_router
-from api import auth_router
+from src.api import tasks_router
+from src.api import users_router
+from src.api import auth_router
 
 common_router = APIRouter()
 
