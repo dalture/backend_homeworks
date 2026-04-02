@@ -10,31 +10,31 @@ class UserService:
     def __init__(self, repository: UserRepository = Depends()):
         self.repo = repository
 
-    def get_all_users(self, limit, offset) -> List[BaseUser] | None:
-        return self.repo.get_all_users(limit, offset)
+    async def get_all_users(self, limit, offset) -> List[BaseUser] | None:
+        return await self.repo.get_all_users(limit, offset)
     
-    def get_user_by_id(self, user_id: int):
-        user_db = self.repo.get_by_id(user_id)
+    async def get_user_by_id(self, user_id: int):
+        user_db = await self.repo.get_by_id(user_id)
 
         if not user_db:
             return UserNotFoundException(user_id=user_id)
         
         return user_db
     
-    def get_user_by_email(self, user_email: str):
-        return self.repo.get_by_email(user_email)
+    async def get_user_by_email(self, user_email: str):
+        return await self.repo.get_by_email(user_email)
 
-    def create_user(self, user: RegistrationUser):
-        if not self.repo.get_by_email(user.user_email):
-            return self.repo.create(user)
+    async def create_user(self, user: RegistrationUser):
+        if not await self.repo.get_by_email(user.user_email):
+            return await self.repo.create(user)
         else:
             raise HTTPException(
                 status_code=400,
                 detail="User already exists"
             )
         
-    def login_user(self, user: LoginUser) -> AccessToken | None:
-        db_user = self.repo.get_by_email(user.user_email)
+    async def login_user(self, user: LoginUser) -> AccessToken | None:
+        db_user = await self.repo.get_by_email(user.user_email)
 
         if not verify_password(user.user_password, db_user.user_password_hash):
             raise HTTPException(

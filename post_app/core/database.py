@@ -8,5 +8,5 @@ AsyncSessionLocal = async_sessionmaker(autocommit=False, class_=AsyncSession, ex
 
 # Функция, которая создает подключение к БД. Используем как зависимость
 async def get_db():
-    with AsyncSessionLocal() as session:
+    async with AsyncSessionLocal() as session:
         yield session

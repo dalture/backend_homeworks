@@ -16,5 +16,6 @@ class TaskInfo(Base):
     task_status = Column(String(16), nullable=False)
     task_created_at = Column(DateTime(timezone=True), server_default=func.now())
     task_deadline = Column(DateTime(timezone=True), nullable=True)
+    task_avatar_url = Column(String(255), nullable=True)
 
     comments = relationship("CommentInfo", back_populates="task", cascade="all, delete-orphan")

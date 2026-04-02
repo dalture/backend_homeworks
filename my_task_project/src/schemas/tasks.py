@@ -21,6 +21,7 @@ class CreateTask(BaseModel):
     task_status: TaskStatus
     task_deadline: Optional[date] = None
     id_owner: int
+    task_avatar_url: str | None = None
 
 class GetTask(BaseTask):
     id_owner: int
