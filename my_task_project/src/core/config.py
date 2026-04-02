@@ -1,6 +1,10 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
+    app_name: str = "task-service"
+    app_version: str = "0.1.0"
+    app_env: str = "dev"
+
     db_host: str
     db_port: str
     db_user: str
